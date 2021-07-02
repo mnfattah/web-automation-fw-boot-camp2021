@@ -6,11 +6,9 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.LogStatus;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -81,7 +79,9 @@ public class TestBase {
             driver = new ChromeDriver();
         } else if (platform.equalsIgnoreCase("windows") && browser.equalsIgnoreCase("chrome")) {
             System.setProperty("webdriver.chrome.driver", "../generic/src/main/resources/chromedriver.exe");
-            driver = new ChromeDriver();
+            ChromeOptions options=new ChromeOptions();
+            options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+            driver = new ChromeDriver(options);
         } else if (platform.equalsIgnoreCase("mac") && browser.equalsIgnoreCase("firefox")) {
             System.setProperty("webdriver.gecko.driver", "../generic/src/main/resources/geckodriver");
             driver = new FirefoxDriver();
@@ -89,7 +89,7 @@ public class TestBase {
             System.setProperty("webdriver.gecko.driver", "../generic/src/main/resources/geckodriver.exe");
             driver = new FirefoxDriver();
         }
-        driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(30L, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         return driver;

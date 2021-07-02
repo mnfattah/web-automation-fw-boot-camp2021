@@ -11,6 +11,10 @@
     <modules>
         <module>generic</module>
         <module>amazon</module>
+        <module>facebook</module>
+        <module>cnn</module>
+        <module>cigna</module>
+        <module>citibank</module>
     </modules>
 
     <properties>
