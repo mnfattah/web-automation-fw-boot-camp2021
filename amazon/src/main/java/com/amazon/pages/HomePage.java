@@ -27,28 +27,13 @@ public class HomePage {
     private WebElement clickOnContinue;
 
     @FindBy(id = "ap_password")
-    private WebElement password;
+    private WebElement clickOnThePasswordField;
 
     @FindBy(id = "signInSubmit")
     private WebElement clickOnSubmitButton;
 
-    @FindBy(id = "twotabsearchtextbox")
-    private WebElement typeInSearchBox;
-
-    @FindBy(id = "nav-search-submit-button")
-    private WebElement clickOnSubmitButtonForSearch;
-
-    @FindBy(xpath = "//*[@id='search']//h2/a")
-    private WebElement clickOntheFirstItemFromTheBrowsingList;
-
-    @FindBy(id = "add-to-cart-button")
-    private WebElement addTheItemInCart;
-
-    @FindBy(id = "attach-close_sideSheet-link")
-    private WebElement clickOnCloseTheSideBar;
-
-    @FindBy(id = "nav-cart-count")
-    private WebElement clickOnTheCart;
+    @FindBy(id = "nav-link-accountList-nav-line-1")
+    private WebElement usernameConfirmation;
 
     @FindBy(id = "nav-item-signout")
     private WebElement clickOnSignOutButton;
@@ -56,59 +41,43 @@ public class HomePage {
     @FindBy(id = "nav-link-accountList-nav-line-1")
     private WebElement clickOnAccountDropDown;
 
+    @FindBy(xpath = "//*[@id='authportal-main-section']//h1")
+    private WebElement getTextFromThePageHeader;
 
-    public void userCanSignIn(){
+
+    public void clickOnTheSignInButton(){
         signIn.click();
-        emailAddress.sendKeys("mnfattah_j@yahoo.com");
+    }
+
+    public void writeAnEmailAddressInTheFieldToSignIN(String email){
+        emailAddress.sendKeys(email);
+        Assert.assertTrue(emailAddress.isDisplayed());
         clickOnContinue.click();
-        password.sendKeys("abcd1234");
-        clickOnSubmitButton.click();
-
-    }
-
-    public void browseProductsAndAddItCart(){
-        typeInSearchBox.sendKeys("pen");
-        clickOnSubmitButtonForSearch.click();
-        clickOntheFirstItemFromTheBrowsingList.click();
-        addTheItemInCart.click();
-       String text = TestBase.driver.findElement(By.id("huc-v2-order-row-confirm-text")).getText();
-        Assert.assertTrue(text.contains("Added"), "Cart does not contain any product");
-        ExtentTestManager.log(text + " confirms the item has been added in your cart", LOGGER);
-    }
-
-    public void searchAndVerifyItem(){
-        typeInSearchBox.sendKeys("pen");
-        clickOnSubmitButtonForSearch.click();
-
-    }
-
-    public void verifyAutoSuggession(){
-        typeInSearchBox.sendKeys("pencil");
-        WebDriverWait wait = new WebDriverWait(TestBase.driver, 30);
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@data-keyword='pencil case']")));
-        element.click();
-        String text = TestBase.driver.findElement(By.id("twotabsearchtextbox")).getAttribute("value");
-        Assert.assertTrue(text.contains("case"), "pencil case was not selected in the search box");
-        ExtentTestManager.log(text + " has been selected in the search box", LOGGER);
-
-    }
-
-    public void navigateToTheProducts(){
-        typeInSearchBox.sendKeys("pen");
-        clickOnSubmitButtonForSearch.click();
-        clickOntheFirstItemFromTheBrowsingList.click();
-
-    }
-
-    public void typeOnSearchBar(String text) {
-        typeInSearchBox.sendKeys(text);
-    }
-
-    public void clickOnSearchButton() {
-            clickOnSubmitButtonForSearch.click();
         }
 
+    public void writeAPasswordInTheFieldToSignIN(String password){
+        clickOnThePasswordField.sendKeys(password);
+        Assert.assertTrue(clickOnThePasswordField.isDisplayed());
+    }
 
+    public void clickOnTheSubmitButtonToSignIN(){
+        clickOnSubmitButton.click();
+        }
+
+    public void getUsernameForTheSignInConfirmation(){
+        String text=usernameConfirmation.getText();
+        Assert.assertTrue(text.contains("testUser"), "log didn't contain customer name");
+        ExtentTestManager.log(text+" has logged in successfully", LOGGER);
+    }
+
+    public void userCanSignOutFromAmazonWebsite(){
+        Actions action = new Actions(TestBase.driver);
+        action.moveToElement(clickOnAccountDropDown).moveToElement(clickOnSignOutButton).click().build().perform();
+        String text = getTextFromThePageHeader.getText();
+        Assert.assertTrue(text.contains("Sign-In"), "Sign in page is not displayed");
+    }
+
+/*
     public void signOut(){
         signIn.click();
         emailAddress.sendKeys("mnfattah_j@yahoo.com");
@@ -122,6 +91,6 @@ public class HomePage {
 
 
     }
-
+*/
 
 }
